@@ -23,6 +23,7 @@ func WrapGroup(prefix string, g *echo.Group) {
 		Handler echo.HandlerFunc
 	}{
 		{"GET", "/debug/pprof/", IndexHandler()},
+		{"GET", "/debug/pprof/allocs", AllocsHandler()},
 		{"GET", "/debug/pprof/heap", HeapHandler()},
 		{"GET", "/debug/pprof/goroutine", GoroutineHandler()},
 		{"GET", "/debug/pprof/block", BlockHandler()},
@@ -49,6 +50,14 @@ func WrapGroup(prefix string, g *echo.Group) {
 func IndexHandler() echo.HandlerFunc {
 	return func(ctx echo.Context) error {
 		pprof.Index(ctx.Response().Writer, ctx.Request())
+		return nil
+	}
+}
+
+// AllocsHandler will pass the call from /debug/pprof/allocs to pprof.
+func AllocsHandler() echo.HandlerFunc {
+	return func(ctx echo.Context) error {
+		pprof.Handler("allocs").ServeHTTP(ctx.Response().Writer, ctx.Request())
 		return nil
 	}
 }

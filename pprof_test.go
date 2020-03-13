@@ -15,6 +15,7 @@ func newServer() *echo.Echo {
 func checkRouters(routers []*echo.Route, t *testing.T) {
 	expectedRouters := map[string]string{
 		"/debug/pprof/":             "IndexHandler",
+		"/debug/pprof/allocs":       "AllocsHandler",
 		"/debug/pprof/heap":         "HeapHandler",
 		"/debug/pprof/goroutine":    "GoroutineHandler",
 		"/debug/pprof/block":        "BlockHandler",
